@@ -16,6 +16,11 @@ if [ $# -eq 1 ]
 fi
 git commit -m "$msg"
 
+git push origin master
+
+#######################################################
+# deploy mooncaker816.github.io
+#######################################################
 # Go To Public folder
 cd public
 # Add changes to git.
@@ -31,6 +36,9 @@ git commit -m "$msg"
 # Push source and build repos.
 git push origin master
 
+#######################################################
+# deploy mooncaker816.coding.me
+#######################################################
 # go to docs to deploy for coding
 cd ../docs
 # Add changes to git.
