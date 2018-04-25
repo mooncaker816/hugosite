@@ -2,3 +2,7 @@
 	path = public
 	url = git@github.com:mooncaker816/mooncaker816.github.io.git
 	branch = master
+[submodule "docs"]
+	path = docs
+	url = git@git.coding.net:mooncaker816/mooncaker816.coding.me.git
+	branch = master
