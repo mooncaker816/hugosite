@@ -5,6 +5,9 @@ echo -e "\033[0;32mDeploying updates to GitHub & Coding...\033[0m"
 # Build the project.
 hugo # if using a theme, replace with `hugo -t <YOURTHEME>`
 
+# copy build pages to docs folder for coding
+cp -r public/* docs/
+
 #######################################################
 # deploy mooncaker816.github.io
 #######################################################
@@ -26,8 +29,6 @@ git push origin master
 #######################################################
 # deploy mooncaker816.coding.me
 #######################################################
-# copy build pages to docs folder for coding
-cp -r public/* docs/
 
 # go to docs to deploy for coding
 cd ../docs
