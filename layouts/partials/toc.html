@@ -11,6 +11,7 @@
       {{ $hash := index (findRE "id=.([^\"]+)." $header 1) 0 }}
       {{ $hash := replace $hash "id=\"" "" }}
       {{ $hash := replace $hash "\"" "" }}
+      {{ $hash := md5 $hash }}{{/*对h标签做与之前相同的预处理，防止中文 toc 滚动自适应失效*/}}
 
       {{ if ne $i 0 }}
         {{ $previous_level := index (findRE "[1-3]" (index $headers (sub $i 1)) 1) 0 }}

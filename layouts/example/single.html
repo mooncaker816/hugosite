@@ -2,6 +2,24 @@
 {{ partial "navbar.html" . }}
 {{ $current_page := . }}
 
+{{ $headers := findRE "<h[1-3].*?>(.|\n])+?</h[1-3]>" .Content }}
+{{/*这里对h标签的id 进行了处理，防止中文标题 toc 滚动自适应失效*/}}
+{{ $.Scratch.Set "cc" (htmlUnescape .Content | string) }}
+
+{{ $has_headers := ge (len $headers) 1 }}
+{{ if $has_headers }}
+    {{ range $i, $header := $headers }}
+        {{ $innercc := $.Scratch.Get "cc" }}
+        {{ $o_hid := index (findRE "id=.([^\"]+)." $header 1) 0 }}
+        {{ $o_hid := replace $o_hid "id=\"" "" }}
+        {{ $o_hid := replace $o_hid "\"" "" }}      
+        {{ $n_hid := md5 $o_hid }}        
+        {{ $n_header := replace $header $o_hid $n_hid }}                
+        {{ $innercc := replace $innercc $header $n_header}}
+        {{ $.Scratch.Set "cc" $innercc }}
+    {{ end }}
+{{ end }}
+
 <div class="container body-content tocpost">
   <div class="row">
 
@@ -63,7 +81,7 @@
               {{ partial "article_metadata" (dict "content" . "is_list" 0) }}
 
               <div class="article-style" itemprop="articleBody">
-                {{ .Content }}
+                {{ $.Scratch.Get "cc" | safeHTML }}
               </div>
 
               {{ partial "tags.html" . }}
