@@ -167,8 +167,8 @@ enableGitInfo = false
 
   # Link custom CSS and JS assets
   #   (relative to /static/css and /static/js respectively)
-  # custom_css = ["custom.css"]
-  custom_css = []
+  custom_css = ["custom.css"]
+  # custom_css = []
   custom_js  = ["wordart.min.js"]
 
   # Publication types.
@@ -297,6 +297,33 @@ enableGitInfo = false
   name = "归档"
   url = "arch/"
   weight = 6
+
+[[menu.main]]
+  name = "示例"
+  url = "example/"
+  weight = 7
+
+# example 中的 identifer 不要用中文，要不然不能 expand 子目录，name 可以用中文
+[[menu.example]]
+  name = "Example目录零"
+  weight = 5
+  url = "/example/"
+
+[[menu.example]]
+  name = "Example目录一"
+  weight = 10
+  identifier = "example-1"
+
+[[menu.example]]
+  name = "Example目录二"
+  weight = 20
+  identifier = "example-2"
+
+[[menu.example]]
+  name = "Example目录三"
+  url = "/example/example-3/"
+  weight = 40
+
 
 # Taxonomies.
 [taxonomies]
