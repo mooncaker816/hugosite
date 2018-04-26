@@ -8,7 +8,7 @@ tags:
 - Go package
 ---
 
-### 包
+## 包
 
 <!--more-->
 
@@ -37,7 +37,8 @@ tags:
        myfmt "mylib/fmt"
    )
   ```
-  当重命名名称为下划线时,导入的包只执行init初始化函数，如为数据库注册驱动
+
+- 当重命名名称为下划线时,导入的包只执行init初始化函数，如为数据库注册驱动
 
   ```go
   package main
@@ -45,11 +46,11 @@ tags:
        "database/sql"
      _ "github.com/goinaction/code/chapter3/dbdriver/postgres" 
   )
-
   func main() {
    sql.Open("postgres", "mydb")
   }
   ```
+
 
 - 导入的包必须被使用到，否则编译会报错
 

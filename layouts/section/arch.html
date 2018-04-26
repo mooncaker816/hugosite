@@ -14,7 +14,7 @@
 
   {{ $paginator := .Paginate ($posts.GroupByDate "Jan 2006") .Params.count }}
   {{ range $paginator.PageGroups }}
-  <h3>{{ .Key }}</h3>
+  <h3>{{ printf "%s (%d篇)" .Key (len .Pages) }}</h3>
   <ul>
     {{ range (where .Pages "Type" "post") }}
         <li>

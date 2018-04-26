@@ -45,16 +45,16 @@
               </div>
               {{ end }}
 
-              <div class="body-footer">
-                  {{ i18n "last_updated" }} {{ $.Lastmod.Format $.Site.Params.date_format }}
-              </div>
-
               {{ if .Site.Params.section_pager }}
               <div class="article-widget">
                 {{ partial "section_pager.html" . }}
               </div>
               {{ end }}
 
+              <div class="body-footer">
+                  {{ i18n "last_updated" }} {{ $.Lastmod.Format $.Site.Params.date_format }}
+              </div>
+              
               {{ partial "comments.html" . }}
 
             </div>
