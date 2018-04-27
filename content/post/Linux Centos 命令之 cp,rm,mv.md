@@ -132,7 +132,7 @@ cp: omitting directory ‘/etc’
 [root@78063f0fe2e8 tmp]# cp -r /etc /tmp
 ```
 
-{{< asciinema 1wQwTsxT1J3Xs3MjPk8A7wgLZ >}}
+{{< asciinemal 177529 >}}
 
 ## rm - remove 删除目录或文件
 
@@ -212,7 +212,7 @@ sh-4.2# ls
 ks-script-hE5IPf  tmpxq2sylvo-ascii.cast  yum.log
 ```
 
-{{< asciinema eZnFGqsqST6IJDVts4f7MONRt >}}
+{{< asciinemal 177530 >}}
 
 ## mv - move 移动文件或目录，更名
 
@@ -293,5 +293,5 @@ sh-4.2# ls
 ks-script-hE5IPf  mvtest2  tmp8u627nsx-ascii.cast  yum.log
 ```
 
-{{< asciinema CyAOm5kpvEzi75HFNowZdIV23 >}}
+{{< asciinemal 177531 >}}
 

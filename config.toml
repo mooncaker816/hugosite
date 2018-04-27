@@ -168,9 +168,9 @@ enableGitInfo = false
 
   # Link custom CSS and JS assets
   #   (relative to /static/css and /static/js respectively)
-  custom_css = ["custom.css"]
+  custom_css = ["custom.css","asciinema-player.css"]
   # custom_css = []
-  custom_js  = ["wordart.min.js"]
+  custom_js  = ["wordart.min.js","asciinema-player.js"]
 
   # Publication types.
   #   Used to categorize publications.

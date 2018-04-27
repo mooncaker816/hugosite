@@ -115,7 +115,7 @@ sh-4.2# ls -l bashrc --time=atime
 -rw-r--r-- 1 root root 176 Jan  1 10:00 bashrc
 ```
 
-{{< asciinema EK9paXYyASszuUBvO9OOpzIfa >}}
+{{< asciinemal 177538 >}}
 
 ## cat - concatenate 浏览文件
 
@@ -184,7 +184,7 @@ sh-4.2# cat -An test.conf
      2	this is a test file only...$
 ```
 
-{{< asciinema JqE1p5EPWbGntVdOAXNfnoY1O >}}
+{{< asciinemal 177541 >}}
 
 ##  tac - 反向 cat
 

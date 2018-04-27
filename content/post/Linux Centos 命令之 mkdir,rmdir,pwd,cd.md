@@ -68,7 +68,7 @@ drwxr-xr-x 3 root root 4096 Apr 21 05:01 test2
 drwx--x--x 2 root root 4096 Apr 21 05:10 /tmp/mingle
 ```
 
-{{< asciinema IfLUdKAKL7a0b0p84Ye0ZgbGg >}}
+{{< asciinemal 177520 >}}
 
 ## rmdir - remove empty directory 删除空目录
 
@@ -104,7 +104,7 @@ rmdir: removing directory, ‘/tmp’
 rmdir: failed to remove directory ‘/tmp’: Directory not empty
 ```
 
-{{< asciinema Cn6E7LzNtzxz21NeFaOUN0U3t >}}
+{{< asciinemal 177521 >}}
 
 ## pwd - print working directory 打印当前路径
 
@@ -131,7 +131,7 @@ lrwxrwxrwx 1 root root 10 Apr  2 18:38 /var/mail -> spool/mail
 /var/mail
 ```
 
-{{< asciinema olfTBQ4qihCn5XdssoKBj9Mn9 >}}
+{{< asciinemal 177522 >}}
 
 ## cd - change directory 切换当前路径
 
@@ -161,5 +161,5 @@ lrwxrwxrwx 1 root root 10 Apr  2 18:38 /var/mail -> spool/mail
 [root@78063f0fe2e8 mail]#
 ```
 
-{{< asciinema tQtEI0jB0jXDClx5NryyKLD6i >}}
+{{< asciinemal 177524 >}}
 

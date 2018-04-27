@@ -1,0 +1,29 @@
+https://qimin.me {
+    tls minglegu@gmail.com
+    gzip
+    root /home/qimin.me/public
+    log / /var/log/caddy/qimin.me_access.log "{combined}" {
+        rotate_size 100 # Rotate a log when it reaches 100 MB
+        rotate_age  14  # Keep rotated log files for 14 days
+        rotate_keep 10  # Keep at most 10 rotated log files
+        rotate_compress # Compress rotated log files in gzip format
+    }
+    errors /var/log/caddy/qimin.me_error.log {
+        404 404.html # Not Found
+        rotate_size 100 # Rotate a log when it reaches 100 MB
+        rotate_age  14  # Keep rotated log files for 14 days
+        rotate_keep 10  # Keep at most 10 rotated log files
+        rotate_compress # Compress rotated log files in gzip format
+    }
+    git {
+        repo git@github.com:mooncaker816/hugosite.git
+        key /home/.ssh/id_rsa
+        path /home/qimin.me
+        then hugo --destination=/home/qimin.me/public
+        hook /webhook mNC,8vi9FZ#cCL
+        hook_type github
+        clone_args --recursive
+        pull_args --recurse-submodules
+    }
+    hugo
+}
