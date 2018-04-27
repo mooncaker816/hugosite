@@ -19,6 +19,7 @@ https://qimin.me {
         repo git@github.com:mooncaker816/hugosite.git
         key /home/.ssh/id_rsa
         path /home/qimin.me
+        then git submodule update --init --recursive
         then hugo --destination=/home/qimin.me/public
         hook /webhook mNC,8vi9FZ#cCL
         hook_type github
