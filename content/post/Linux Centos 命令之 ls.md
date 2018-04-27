@@ -164,3 +164,4 @@ drwxr-xr-x:
 权限设置：rwxr-xr-x (拥有者权限 rwx，所属组权限r-x，其他权限r-x)
 
 {{< asciinemal 177514 >}}
+
