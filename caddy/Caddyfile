@@ -19,12 +19,11 @@ https://qimin.me {
         repo git@github.com:mooncaker816/hugosite.git
         key /home/.ssh/id_rsa
         path /home/qimin.me
-        then cd /home/qimin.me;hugo
-        #then hugo --destination=/home/qimin.me/public --config=/home/qimin.me/config.toml
+        then hugo -v --destination=/home/qimin.me/public --config=/home/qimin.me/config.toml
         hook /webhook {$SECRET}
         hook_type github
         clone_args --recursive
         pull_args --recurse-submodules
     }
-    hugo
+    hugo /home/qimin.me
 }
