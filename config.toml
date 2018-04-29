@@ -110,7 +110,7 @@ enableGitInfo = true
 
   # Date and time format (refer to Go's date format: http://fuckinggodateformat.com )
   #   Examples: "Mon, Jan 2, 2006" or "2006-01-02"
-  date_format = "Jan 2, 2006 15:04"
+  date_format = "Jan 2, 2006"
   #   Examples: "3:04 pm" or "15:04"
   time_format = "3:04 PM"
 
