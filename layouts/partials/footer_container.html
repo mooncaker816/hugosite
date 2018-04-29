@@ -20,6 +20,7 @@
     {{ if eq .Site.BaseURL "https://mooncaker816.coding.me/" }}
     <p>Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a></p>
     {{ end }}
+    <p>最后更新时间：{{ .GitInfo.AuthorDate }}</p>
   </div>
 </footer>
 
