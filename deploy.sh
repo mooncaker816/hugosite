@@ -1,12 +1,6 @@
 #!/bin/bash
 
-echo -e "\033[0;32mDeploying updates to GitHub & Coding...\033[0m"
-
-# Build the project.
-hugo # if using a theme, replace with `hugo -t <YOURTHEME>`
-
-# copy build pages to docs folder for coding
-cp -r public/* docs/
+echo -e "\033[0;32mDeploying updates to qimin.me...\033[0m"
 
 #######################################################
 # Push source changes to github hugosite.git
@@ -21,10 +15,14 @@ git commit -m "$msg"
 
 git push origin master
 
-
+echo -e "\033[0;32mDeploying updates to mooncaker816.github.io...\033[0m"
 #######################################################
 # deploy mooncaker816.github.io
 #######################################################
+rm -f public/*
+
+hugo --config config.toml,config.github.toml
+
 # Go To Public folder
 cd public
 # Add changes to git.
@@ -40,9 +38,14 @@ git commit -m "$msg"
 # Push source and build repos.
 git push origin master
 
+echo -e "\033[0;32mDeploying updates to mooncaker816.coding.me...\033[0m"
+
 #######################################################
 # deploy mooncaker816.coding.me
 #######################################################
+rm -f ../docs/*
+
+hugo --config config.toml,config.coding.toml --destination docs
 
 # go to docs to deploy for coding
 cd ../docs

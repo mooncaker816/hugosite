@@ -1,0 +1,16 @@
+# Configuration of Academic
+# Documentation: https://sourcethemes.com/academic/
+
+# The URL of your website.
+# End your URL with a `/` trailing slash, e.g. `https://example.com/`.
+baseurl = "https://mooncaker816.coding.me/"
+
+
+# Enable analytics by entering your Google Analytics tracking ID
+# googleAnalytics = ""
+googleAnalytics = "UA-118085755-3"
+
+[params]
+
+  sumositeid = "aae5dee11a12d1bab34da5869b14a5fb852b2739d227fa551bd08a2b772e721c"
+

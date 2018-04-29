@@ -3,7 +3,7 @@
 
 # The URL of your website.
 # End your URL with a `/` trailing slash, e.g. `https://example.com/`.
-baseurl = "https://mooncaker816.github.io/"
+baseurl = "https://qimin.me/"
 
 # Title of your site
 title = "Mooncaker816"
@@ -24,7 +24,7 @@ disqusShortname = "mooncaker816"
 
 # Enable analytics by entering your Google Analytics tracking ID
 # googleAnalytics = ""
-googleAnalytics = "UA-118085755-1"
+googleAnalytics = "UA-118085755-2"
 
 # Default language to use (if you setup multilingual support)
 defaultContentLanguage = "zh"
@@ -188,6 +188,9 @@ enableGitInfo = false
     'Book',  # 5
     'Book section'  # 6
   ]
+
+  # sumo
+  sumositeid = "8290a66a57009dbd6b69efbc747781c98b4513ab8436407d397395871367364a"
 
   # Configuration of talk pages.
   [params.talks]
