@@ -1,6 +1,6 @@
 #!/bin/bash
 
-docker run -d --rm \
+docker run -d --name=mycaddy --rm \
     -e "ACME_AGREE=true" \
     -e "SECRET=xxxxxx" \
     -e "CADDYPATH=/etc/caddycerts" \
