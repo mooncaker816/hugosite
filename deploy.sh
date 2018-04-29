@@ -19,7 +19,7 @@ echo -e "\033[0;32mDeploying updates to mooncaker816.github.io...\033[0m"
 #######################################################
 # deploy mooncaker816.github.io
 #######################################################
-rm -f public/*
+rm -rf public/*
 
 hugo --config config.toml,config.github.toml
 
@@ -38,17 +38,19 @@ git commit -m "$msg"
 # Push source and build repos.
 git push origin master
 
+cd ..
+
 echo -e "\033[0;32mDeploying updates to mooncaker816.coding.me...\033[0m"
 
 #######################################################
 # deploy mooncaker816.coding.me
 #######################################################
-rm -f ../docs/*
+rm -rf docs/*
 
 hugo --config config.toml,config.coding.toml --destination docs
 
 # go to docs to deploy for coding
-cd ../docs
+cd docs
 # Add changes to git.
 git add .
 
