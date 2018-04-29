@@ -1,3 +1,6 @@
+https://www.qimin.me {
+    redir https://qimin.me
+}
 https://qimin.me {
     tls minglegu@gmail.com
     gzip
