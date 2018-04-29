@@ -1,5 +1,5 @@
 {{ $.Scratch.Add "tagulid" "" }}
-{{ if eq .Site.BaseURL "https://qimin.me/" }}
+{{ if eq $.Site.BaseURL "https://qimin.me/" }}
     {{ $.Scratch.Set "tagulid" (printf "%s-%s" (.Get 0) "google") }}
 {{ else }}
     {{ $.Scratch.Set "tagulid" (printf "%s-%s" (.Get 0) "baidu") }}
