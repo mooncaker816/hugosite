@@ -1,9 +1,7 @@
 {{ $.Scratch.Add "tagulid" "" }}
-{{ if eq $.Site.BaseURL "https://qimin.me/" }}
+{{ if eq (string $.Site.BaseURL) "https://qimin.me/" }}
     {{ $.Scratch.Set "tagulid" (printf "%s-%s" (.Get 0) "google") }}
 {{ else }}
     {{ $.Scratch.Set "tagulid" (printf "%s-%s" (.Get 0) "baidu") }}
 {{ end }}
-<p>{{$.Site.BaseURL}}</p>
-<p>{{$.Scratch.Get "tagulid"}}</p>
 <div class="block" style="width: 400px; height: 400px;" data-wordart-src="{{ (printf "/tagul/%s" ($.Scratch.Get "tagulid")) | relURL }}" data-wordart-show-attribution></div>
