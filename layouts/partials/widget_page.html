@@ -19,7 +19,12 @@
     {{ partial $widget $params }}
   {{ else }}
   <section id="{{ $page.File.TranslationBaseName }}" class="home-section">
+    {{ if eq $page.Params.widget "about"}}
+    <!-- <div class="container"> -->
+      <div class="container-fluid">
+    {{ else }}
     <div class="container">
+    {{ end }}    
       {{ partial $widget $params }}
     </div>
   </section>

@@ -170,7 +170,7 @@ enableGitInfo = true
   #   (relative to /static/css and /static/js respectively)
   custom_css = ["custom.css","asciinema-player.css"]
   # custom_css = []
-  custom_js  = ["wordart.min.js","asciinema-player.js"]
+  custom_js  = ["wordart.min.js","asciinema-player.js","three.js","threetxt.js"]
 
   # Publication types.
   #   Used to categorize publications.
