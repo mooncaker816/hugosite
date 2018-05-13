@@ -1,7 +1,7 @@
 {{ partial "header.html" . }}
 {{ partial "navbar.html" . }}
 
-{{ $headers := findRE "<h[1-3].*?>(.|\n])+?</h[1-3]>" .Content }}
+{{ $headers := findRE "<h[1-6].*?>(.|\n])+?</h[1-6]>" .Content }}
 {{/*这里对h标签的id 进行了处理，防止中文标题 toc 滚动自适应失效*/}}
 {{ $.Scratch.Set "cc" (htmlUnescape .Content | string) }}
 

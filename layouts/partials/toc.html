@@ -1,11 +1,11 @@
-{{ $headers := findRE "<h[1-3].*?>(.|\n])+?</h[1-3]>" .Content }}
+{{ $headers := findRE "<h[1-6].*?>(.|\n])+?</h[1-6]>" .Content }}
 {{ $has_headers := ge (len $headers) 1 }}
 {{ if $has_headers }}
 <nav id="toc" data-toggle="toc">
   <h4 class="text-muted">页面内容</h4>
   <ul class="nav">
     {{ range $i, $header := $headers }}
-      {{ $header_level := index (findRE "[1-3]" . 1) 0 }}
+      {{ $header_level := index (findRE "[1-6]" . 1) 0 }}
       {{ $header_level := len (seq $header_level) }}
 
       {{ $hash := index (findRE "id=.([^\"]+)." $header 1) 0 }}
@@ -14,7 +14,7 @@
       {{ $hash := md5 $hash }}{{/*对h标签做与之前相同的预处理，防止中文 toc 滚动自适应失效*/}}
 
       {{ if ne $i 0 }}
-        {{ $previous_level := index (findRE "[1-3]" (index $headers (sub $i 1)) 1) 0 }}
+        {{ $previous_level := index (findRE "[1-6]" (index $headers (sub $i 1)) 1) 0 }}
         {{ $previous_level := len (seq $previous_level) }}
 
         {{ if gt $header_level $previous_level }}
@@ -50,8 +50,8 @@
       {{end}}
     {{end}}
 
-    {{ $first_level := len (seq (index (findRE "[1-3]" (index $headers 0) 1) 0)) }}
-    {{ $last_level := len (seq (index (findRE "[1-3]" (index $headers (sub (len $headers) 1)) 1) 0)) }}
+    {{ $first_level := len (seq (index (findRE "[1-6]" (index $headers 0) 1) 0)) }}
+    {{ $last_level := len (seq (index (findRE "[1-6]" (index $headers (sub (len $headers) 1)) 1) 0)) }}
     {{ range seq (sub $last_level $first_level) }}
       </li></ul></li>
     {{end}}
