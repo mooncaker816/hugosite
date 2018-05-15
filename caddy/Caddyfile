@@ -22,6 +22,7 @@ https://qimin.me {
         repo git@github.com:mooncaker816/hugosite.git
         key /home/.ssh/id_rsa
         path /home/qimin.me
+        then rm -rf /home/qimin.me/public/*
         then hugo -v --destination=/home/qimin.me/public --config=/home/qimin.me/config.toml
         hook /webhook {$SECRET}
         hook_type github
