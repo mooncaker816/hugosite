@@ -71,16 +71,16 @@ preview = true
             randSig(r),
             randSig(r),
         )
-        fmt.Printf("closed after %v seconds!\n", time.Now().Sub(st))
+        fmt.Printf("closed after %v!\n", time.Since(st))
     }
 
     func randSig(r *rand.Rand) <-chan interface{} {
         ch := make(chan interface{})
         go func() {
             defer close(ch)
-            sec := time.Duration(r.Int63n(10) + 3)
-            fmt.Printf("closing after %d seconds!\n", sec)
-            time.Sleep(sec * time.Second)
+            sec := time.Duration(r.Int63n(10)+3) * time.Second
+            fmt.Printf("closing after %v!\n", sec)
+            time.Sleep(sec)
         }()
         return ch
     }
@@ -88,10 +88,10 @@ preview = true
     结果：
 
     ```bash
-    closing after 7 seconds!
-    closing after 5 seconds!
-    closing after 3 seconds!
-    closing after 12 seconds!
-    closing after 10 seconds!
-    closed after 3.005237401s seconds!
+    closing after 4s!
+    closing after 10s!
+    closing after 3s!
+    closing after 9s!
+    closing after 11s!
+    closed after 3.001062582s!
     ```
