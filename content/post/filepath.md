@@ -123,7 +123,7 @@ preview = true
 	{"abc/./../def" => "def"},
 	{"abc//./../def" => "def"},
     {"abc/../../././../def" => "../../def"},
-    
+
 	{`c:` => `c:.`},
 	{`c:\` => `c:\`},
 	{`c:\abc` => `c:\abc`},
@@ -205,7 +205,7 @@ preview = true
 	{"a/", "a/", ""},
 	{"a", "", "a"},
     {"/", "/", ""},
-    
+
 	{`c:`, `c:`, ``},
 	{`c:/`, `c:/`, ``},
 	{`c:/foo`, `c:/`, `foo`},
@@ -250,7 +250,7 @@ preview = true
 
 	// three parameters
     {[]string{"/", "a", "b"}, "/a/b"},
-    
+
 	{[]string{`directory`, `file`}, `directory\file`},
 	{[]string{`C:\Windows\`, `System32`}, `C:\Windows\System32`},
 	{[]string{`C:\Windows\`, ``}, `C:\Windows`},
@@ -357,7 +357,7 @@ preview = true
 	{"../..", "..", "err"},
 	{"a", "/a", "err"},
     {"/a", "a", "err"},
-    
+
 	{`C:a\b\c`, `C:a/b/d`, `..\d`},
 	{`C:\`, `D:\`, `err`},
 	{`C:`, `D:`, `err`},
@@ -407,7 +407,7 @@ preview = true
 	{"a/b/.x", ".x"},
 	{"a/b/c.", "c."},
     {"a/b/c.x", "c.x"},
-    
+
 	{`c:\`, `\`},
 	{`c:.`, `.`},
 	{`c:\a\b`, `b`},
@@ -439,7 +439,7 @@ preview = true
 	{"a/b/.x", "a/b"},
 	{"a/b/c.", "a/b"},
     {"a/b/c.x", "a/b"},
-    
+
 	{`c:\`, `c:\`},
 	{`c:.`, `c:.`},
 	{`c:\a\b`, `c:\a`},
