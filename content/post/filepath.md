@@ -122,7 +122,7 @@ preview = true
 	// Combinations
 	{"abc/./../def" => "def"},
 	{"abc//./../def" => "def"},
-    {"abc/../../././../def" => "../../def"},
+	{"abc/../../././../def" => "../../def"},
 
 	{`c:` => `c:.`},
 	{`c:\` => `c:\`},
@@ -168,7 +168,7 @@ preview = true
 ```go
 	{"", []string{}},
 	{string([]byte{'a', lsep, 'b'}), []string{"a", "b"}},
-    {string([]byte{lsep, 'a', lsep, 'b'}), []string{"", "a", "b"}},
+	{string([]byte{lsep, 'a', lsep, 'b'}), []string{"", "a", "b"}},
     
 	// quoted
 	{`"a"`, []string{`a`}},
@@ -204,7 +204,7 @@ preview = true
 	{"a/b/", "a/b/", ""},
 	{"a/", "a/", ""},
 	{"a", "", "a"},
-    {"/", "/", ""},
+	{"/", "/", ""},
 
 	{`c:`, `c:`, ``},
 	{`c:/`, `c:/`, ``},
@@ -249,7 +249,7 @@ preview = true
 	{[]string{"", ""}, ""},
 
 	// three parameters
-    {[]string{"/", "a", "b"}, "/a/b"},
+	{[]string{"/", "a", "b"}, "/a/b"},
 
 	{[]string{`directory`, `file`}, `directory\file`},
 	{[]string{`C:\Windows\`, `System32`}, `C:\Windows\System32`},
@@ -356,7 +356,7 @@ preview = true
 	{"..", "a", "err"},
 	{"../..", "..", "err"},
 	{"a", "/a", "err"},
-    {"/a", "a", "err"},
+	{"/a", "a", "err"},
 
 	{`C:a\b\c`, `C:a/b/d`, `..\d`},
 	{`C:\`, `D:\`, `err`},
@@ -406,7 +406,7 @@ preview = true
 	{"abc/def", "def"},
 	{"a/b/.x", ".x"},
 	{"a/b/c.", "c."},
-    {"a/b/c.x", "c.x"},
+	{"a/b/c.x", "c.x"},
 
 	{`c:\`, `\`},
 	{`c:.`, `.`},
@@ -438,7 +438,7 @@ preview = true
 	{"abc/def", "abc"},
 	{"a/b/.x", "a/b"},
 	{"a/b/c.", "a/b"},
-    {"a/b/c.x", "a/b"},
+	{"a/b/c.x", "a/b"},
 
 	{`c:\`, `c:\`},
 	{`c:.`, `c:.`},
