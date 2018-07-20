@@ -45,6 +45,10 @@ SHA3-512|无限制|64 bytes(512 bits)|72 bytes(576 bits)|
 SHAKE128|无限制|变长|168 bytes(1344 bits)|
 SHAKE256|无限制|变长|136 bytes(1088 bits)|
 
+注：对于 MD5 来说，如果根据最后一个分块末尾用来记录源数据字节长度的空间大小（8个字节）来看，其最大输入长度应该为2^64 - 1，但是在 MD5 的算法中，指明了此处的值是对 2^64 取余,所以 MD5 的输入没有限制。（但是 Go 中并没有取余）
+
+> The remaining bits are filled up with 64 bits representing the length of the original message, modulo 264.
+
 # 2 MD5 
 
 ## 2.1 预备函数
