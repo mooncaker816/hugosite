@@ -79,6 +79,7 @@ II(a,b,c,d,Mj,s,ti) 表示&a=b+((a+I(b,c,d)+Mj+ti)\lll s)
     如果 r >= 56，先填充至64个字节，第一位填充1，后续填充0，即填满一个分块  
     如果 r < 56，先填充至56个字节，第一位填充1，后续填充0，再将原始数据对应的字节长度信息以 uint64 为类型，按小字节序填入该分块的最末尾8个字节
 - 处理填充分块，可能只有一个填充分块，也可能有两个
+- 块内按小字节序将64字节数据分为16组uint32，对这16组数据进行共计4轮64次循环计算
 - 整合最终散列值
 
 ## 2.3 Go 源码分析
@@ -704,5 +705,70 @@ func blockGeneric(dig *digest, p []byte) {
 
 ```
 
+# 3. SHA1
 
+## 3.1 与 MD5 的比较
+- SHA1 摘要长度为20字节160位长
+- SHA1 与 MD5 相反，采用大字节序存储数值
+- SHA1 采用与 MD5 完全一致的分块方式
+- SHA1 块内按大字节序分为16组 uint32，再进行共计80次循环计算
 
+## 3.2 SHA1 分块处理算法
+
+https://en.wikipedia.org/wiki/SHA-1
+
+## 3.3 Go源码分析
+
+| |
+|:---|
+|[sha1.go](https://github.com/mooncaker816/LearningGoStandardLib/blob/master/crypto/sha1/sha1.go)|
+|[sha1block.go](https://github.com/mooncaker816/LearningGoStandardLib/blob/master/crypto/sha1/sha1block.go)|
+
+# 4. SHA2
+
+　　1. SHA2 是 SHA256，SHA224，SHA512，SHA384，SHA512-256，SHA512-224 的统称  
+
+　　2. SHA224 可以看成是以不同初始摘要计算的 SHA256 的截取
+
+　　3. 同样，SHA384，SHA512-256，SHA512-224 可以看成是以不同初始摘要计算的 SHA512 的截取　
+
+## 4.1 SHA256，SHA224
+
+### 4.1.1 与 MD5 的比较
+- SHA256 摘要长度为32字节256位长
+- SHA256 与 MD5 相反，采用大字节序存储数值
+- SHA256 采用与 MD5 完全一致的分块方式
+- SHA256 块内按大字节序分为16组 uint32，再以这16组数据为基础，按一定算法扩充至64组，最后再进行共计64次循环计算
+
+### 4.1.2 SHA256 分块处理算法
+
+https://en.wikipedia.org/wiki/SHA-2
+
+### 4.1.3 Go源码分析
+
+| |
+|:---|
+|[sha256.go](https://github.com/mooncaker816/LearningGoStandardLib/blob/master/crypto/sha256/sha256.go)|
+|[sha256block.go](https://github.com/mooncaker816/LearningGoStandardLib/blob/master/crypto/sha256/sha256block.go)|
+
+## 4.2 SHA512，SHA384，SHA512-256，SHA512-224
+
+### 4.2.1 与 MD5 的比较
+- SHA512 摘要长度为64字节512位长
+- SHA512 与 MD5 相反，采用大字节序存储数值
+- SHA512 采用与 MD5 基本一致的分块方式，分块大小略有调整
+	分块大小由64字节512位变为128字节1024位，
+	最后一个分块末尾用来记录源数据字节长度的部分由8字节改为16字节
+	因为分块的长度改成了128字节，所以填充临界点位128-16=112字节
+- SHA512 块内按大字节序分为16组 uint64，再以这16组数据为基础，按一定算法扩充至80组，最后再进行共计80次循环计算
+
+### 4.2.2 SHA512 分块处理算法
+
+https://en.wikipedia.org/wiki/SHA-2
+
+### 4.2.3 Go源码分析
+
+| |
+|:---|
+|[sha512.go](https://github.com/mooncaker816/LearningGoStandardLib/blob/master/crypto/sha512/sha512.go)|
+|[sha512block.go](https://github.com/mooncaker816/LearningGoStandardLib/blob/master/crypto/sha512/sha512block.go)|
