@@ -791,116 +791,118 @@ preview = true
 　　　　5.1.1.9 至此，serverHello 完成，完成 serverHelloDoneMsg 消息，并写入 c.sendBuf 中等待正式发送  
 　　　　5.1.1.10 正式推送 c.sendBuf 中累积的消息给客户端，依次包括 serverHelloMsg，certificateMsg，certificateStatusMsg（可选），serverKeyExchangeMsg，certificateRequestMsg（可选），serverHelloDoneMsg  
 
-        ```go
-        // [Min] 完整的 handshake
-        func (hs *serverHandshakeState) doFullHandshake() error {
-        	c := hs.c
+	```go
+	// [Min] 完整的 handshake
+	func (hs *serverHandshakeState) doFullHandshake() error {
+		c := hs.c
 
-        	// [Min] 如果客户端要求 ocspStapling，且证书状态不为空，设置 hs.hello.ocspStapling 为真
-        	if hs.clientHello.ocspStapling && len(hs.cert.OCSPStaple) > 0 {
-        		hs.hello.ocspStapling = true
-        	}
+		// [Min] 如果客户端要求 ocspStapling，且证书状态不为空，设置 hs.hello.ocspStapling 为真
+		if hs.clientHello.ocspStapling && len(hs.cert.OCSPStaple) > 0 {
+			hs.hello.ocspStapling = true
+		}
 
-        	// [Min] 设置是否支持 ticket，套件 id
-        	hs.hello.ticketSupported = hs.clientHello.ticketSupported && !c.config.SessionTicketsDisabled
-        	hs.hello.cipherSuite = hs.suite.id
+		// [Min] 设置是否支持 ticket，套件 id
+		hs.hello.ticketSupported = hs.clientHello.ticketSupported && !c.config.SessionTicketsDisabled
+		hs.hello.cipherSuite = hs.suite.id
 
-        	// [Min] 根据版本和套件新建 finishedHash
-        	hs.finishedHash = newFinishedHash(hs.c.vers, hs.suite)
-        	// [Min] 如果不需要客户端证书，直接将 finishedHash.buffer 置为 nil
-        	if c.config.ClientAuth == NoClientCert {
-        		// No need to keep a full record of the handshake if client
-        		// certificates won't be used.
-        		hs.finishedHash.discardHandshakeBuffer()
-        	}
-        	// [Min] 计算 clientHelloMsg 和 serverHelloMsg 的 hash
-        	hs.finishedHash.Write(hs.clientHello.marshal())
-        	hs.finishedHash.Write(hs.hello.marshal())
-        	// [Min] 将 serverHelloMsg 写入 tls.Conn 的缓存 sendBuf 中
-        	if _, err := c.writeRecord(recordTypeHandshake, hs.hello.marshal()); err != nil {
-        		return err
-        	}
+		// [Min] 根据版本和套件新建 finishedHash
+		hs.finishedHash = newFinishedHash(hs.c.vers, hs.suite)
+		// [Min] 如果不需要客户端证书，直接将 finishedHash.buffer 置为 nil
+		if c.config.ClientAuth == NoClientCert {
+			// No need to keep a full record of the handshake if client
+			// certificates won't be used.
+			hs.finishedHash.discardHandshakeBuffer()
+		}
+		// [Min] 计算 clientHelloMsg 和 serverHelloMsg 的 hash
+		hs.finishedHash.Write(hs.clientHello.marshal())
+		hs.finishedHash.Write(hs.hello.marshal())
+		// [Min] 将 serverHelloMsg 写入 tls.Conn 的缓存 sendBuf 中
+		if _, err := c.writeRecord(recordTypeHandshake, hs.hello.marshal()); err != nil {
+			return err
+		}
 
-        	// [Min] 构造certificateMsg，将服务端证书写入缓存 c.sendBuf 中，并完成该消息
-        	certMsg := new(certificateMsg)
-        	certMsg.certificates = hs.cert.Certificate
-        	hs.finishedHash.Write(certMsg.marshal())
-        	if _, err := c.writeRecord(recordTypeHandshake, certMsg.marshal()); err != nil {
-        		return err
-        	}
+		// [Min] 构造certificateMsg，将服务端证书写入缓存 c.sendBuf 中，并完成该消息
+		certMsg := new(certificateMsg)
+		certMsg.certificates = hs.cert.Certificate
+		hs.finishedHash.Write(certMsg.marshal())
+		if _, err := c.writeRecord(recordTypeHandshake, certMsg.marshal()); err != nil {
+			return err
+		}
 
-        	// [Min] 如果需要 ocspStapling，构造 certificateStatusMsg，写入缓存 c.sendBuf 中，并完成该消息
-        	if hs.hello.ocspStapling {
-        		certStatus := new(certificateStatusMsg)
-        		certStatus.statusType = statusTypeOCSP
-        		certStatus.response = hs.cert.OCSPStaple
-        		hs.finishedHash.Write(certStatus.marshal())
-        		if _, err := c.writeRecord(recordTypeHandshake, certStatus.marshal()); err != nil {
-        			return err
-        		}
-        	}
+		// [Min] 如果需要 ocspStapling，构造 certificateStatusMsg，写入缓存 c.sendBuf 中，并完成该消息
+		if hs.hello.ocspStapling {
+			certStatus := new(certificateStatusMsg)
+			certStatus.statusType = statusTypeOCSP
+			certStatus.response = hs.cert.OCSPStaple
+			hs.finishedHash.Write(certStatus.marshal())
+			if _, err := c.writeRecord(recordTypeHandshake, certStatus.marshal()); err != nil {
+				return err
+			}
+		}
 
-        	// [Min] 获得该套件的 keyAgreement 实例
-        	keyAgreement := hs.suite.ka(c.vers)
-        	// [Min] 生成交换的公钥和签名，组成 serverKeyExchangeMsg
-        	// [Min] 也可能不需要交换公钥，如 RSA 秘钥交换
-        	skx, err := keyAgreement.generateServerKeyExchange(c.config, hs.cert, hs.clientHello, hs.hello)
-        	if err != nil {
-        		c.sendAlert(alertHandshakeFailure)
-        		return err
-        	}
-        	// [Min] 如果 skx 不为 nil，说明不是 RSA，
-        	// [Min] 再把 serverKeyExchangeMsg 写入缓存 c.sendBuf 中，并完成该消息
-        	if skx != nil {
-        		hs.finishedHash.Write(skx.marshal())
-        		if _, err := c.writeRecord(recordTypeHandshake, skx.marshal()); err != nil {
-        			return err
-        		}
-        	}
+		// [Min] 获得该套件的 keyAgreement 实例
+		keyAgreement := hs.suite.ka(c.vers)
+		// [Min] 生成交换的公钥和签名，组成 serverKeyExchangeMsg
+		// [Min] 也可能不需要交换公钥，如 RSA 秘钥交换
+		skx, err := keyAgreement.generateServerKeyExchange(c.config, hs.cert, hs.clientHello, hs.hello)
+		if err != nil {
+			c.sendAlert(alertHandshakeFailure)
+			return err
+		}
+		// [Min] 如果 skx 不为 nil，说明不是 RSA，
+		// [Min] 再把 serverKeyExchangeMsg 写入缓存 c.sendBuf 中，并完成该消息
+		if skx != nil {
+			hs.finishedHash.Write(skx.marshal())
+			if _, err := c.writeRecord(recordTypeHandshake, skx.marshal()); err != nil {
+				return err
+			}
+		}
 
-        	// [Min] 如果服务端需要验证客户端的证书，则要发送验证请求
-        	if c.config.ClientAuth >= RequestClientCert {
-        		// Request a client certificate
-        		certReq := new(certificateRequestMsg)
-        		// [Min] 要求证书为 RSASign 或 ECDSASign
-        		certReq.certificateTypes = []byte{
-        			byte(certTypeRSASign),
-        			byte(certTypeECDSASign),
-        		}
-        		// [Min] >= TLS 1.2，提供服务端支持的签名算法
-        		if c.vers >= VersionTLS12 {
-        			certReq.hasSignatureAndHash = true
-        			certReq.supportedSignatureAlgorithms = supportedSignatureAlgorithms
-        		}
+		// [Min] 如果服务端需要验证客户端的证书，则要发送验证请求
+		if c.config.ClientAuth >= RequestClientCert {
+			// Request a client certificate
+			certReq := new(certificateRequestMsg)
+			// [Min] 要求证书为 RSASign 或 ECDSASign
+			certReq.certificateTypes = []byte{
+				byte(certTypeRSASign),
+				byte(certTypeECDSASign),
+			}
+			// [Min] >= TLS 1.2，提供服务端支持的签名算法
+			if c.vers >= VersionTLS12 {
+				certReq.hasSignatureAndHash = true
+				certReq.supportedSignatureAlgorithms = supportedSignatureAlgorithms
+			}
 
-        		// An empty list of certificateAuthorities signals to
-        		// the client that it may send any certificate in response
-        		// to our request. When we know the CAs we trust, then
-        		// we can send them down, so that the client can choose
-        		// an appropriate certificate to give to us.
-        		// [Min] 限定证书的授权组织
-        		if c.config.ClientCAs != nil {
-        			certReq.certificateAuthorities = c.config.ClientCAs.Subjects()
-        		}
-        		// [Min] 累计计算 hash 并写入 conn 的缓存
-        		hs.finishedHash.Write(certReq.marshal())
-        		if _, err := c.writeRecord(recordTypeHandshake, certReq.marshal()); err != nil {
-        			return err
-        		}
-        	}
+			// An empty list of certificateAuthorities signals to
+			// the client that it may send any certificate in response
+			// to our request. When we know the CAs we trust, then
+			// we can send them down, so that the client can choose
+			// an appropriate certificate to give to us.
+			// [Min] 限定证书的授权组织
+			if c.config.ClientCAs != nil {
+				certReq.certificateAuthorities = c.config.ClientCAs.Subjects()
+			}
+			// [Min] 累计计算 hash 并写入 conn 的缓存
+			hs.finishedHash.Write(certReq.marshal())
+			if _, err := c.writeRecord(recordTypeHandshake, certReq.marshal()); err != nil {
+				return err
+			}
+		}
 
-        	// [Min] 至此，hello 阶段完成，发送 helloDone 消息
-        	helloDone := new(serverHelloDoneMsg)
-        	hs.finishedHash.Write(helloDone.marshal())
-        	if _, err := c.writeRecord(recordTypeHandshake, helloDone.marshal()); err != nil {
-        		return err
-        	}
+		// [Min] 至此，hello 阶段完成，发送 helloDone 消息
+		helloDone := new(serverHelloDoneMsg)
+		hs.finishedHash.Write(helloDone.marshal())
+		if _, err := c.writeRecord(recordTypeHandshake, helloDone.marshal()); err != nil {
+			return err
+		}
 
-        	// [Min] 从缓存中将累积的消息推送到客户端，依次包括 serverHelloMsg，certificateMsg，certificateStatusMsg（可选），serverKeyExchangeMsg，certificateRequestMsg（可选），serverHelloDoneMsg
-        	if _, err := c.flush(); err != nil {
-        		return err
-        	}
-        ```
+		// [Min] 从缓存中将累积的消息推送到客户端，依次包括：
+		// [Min] serverHelloMsg，certificateMsg，certificateStatusMsg（可选），
+		// [Min] serverKeyExchangeMsg，certificateRequestMsg（可选），serverHelloDoneMsg
+		if _, err := c.flush(); err != nil {
+			return err
+		}
+	```
 
     > 5.2 重用 Session  
 　　5.2.1 调用 hs.doResumeHandshake()  
@@ -1081,7 +1083,7 @@ preview = true
     }
     ```
 
-# 4. 小结
+# 4. 阶段小结
 
 　　至此，我们完成了：  
     1. 客户端从正式发送 clinetHelloMsg 到正式接收 serverHelloMsg（第一次正式发送，第一次正式接收）   
