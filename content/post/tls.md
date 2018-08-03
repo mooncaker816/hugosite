@@ -92,7 +92,7 @@ preview = true
 
 ## 3.1 ClientHello & ServerHello 阶段
 
-### 3.1.1 客户端从正式发送 ClientHelloMsg 到接受 ServerHelloMsg
+### 3.1.1 客户端从正式发送 ClientHelloMsg 到接收 ServerHelloMsg
 
 1. 客户端设置超时，并通过 Dial 的方式获得可用的 TCPConn，同时初始化`tls.Config`，主要是`config.ServerName`
 
@@ -390,7 +390,7 @@ preview = true
     c.buffering = true
     ```
 
-### 3.1.2  服务端从接受 ClientHelloMsg 到正式发送 ServerHelloMsg
+### 3.1.2  服务端从接收 ClientHelloMsg 到正式发送 ServerHelloMsg
 
 1. 与客户端类似，服务端也是在获得一个可用 TCPConn 之后，对其进行封装，得到tls.Conn，此时 config 已经初始化且包含了服务端的证书
 
@@ -919,7 +919,7 @@ preview = true
 　　　　5.2.3.2 构造 newSessionTicketMsg，完成该消息并写入 c.sendBuf 中等待正式发送  
 　　5.2.4 调用hs.sendFinished 发送finishedMsg  
 　　　　5.2.4.1 发送切换信号，通知客户端此信号之后的消息都为加密消息，服务端将 c.out 切换为加密模式。注意，此信号不写入 finishedHash。  
-　　　　5.2.4.2 构造 finishedMsg，finishedMsg.verifyData 是通过密码套件决定的伪随机数算法计算的伪随机数（func(result, secret, label, seed []byte)），其中secret为主密钥，label是固定的字符串，seed是到目前为止，双方所有的发送以及接受到的消息按先后顺序累积计算的 hash 值。然后完成该消息并写入 c.sendBuf 中等待正式发送，最后将 verifyData 写入c.serverFinished。  
+　　　　5.2.4.2 构造 finishedMsg，finishedMsg.verifyData 是通过密码套件决定的伪随机数算法计算的伪随机数（func(result, secret, label, seed []byte)），其中secret为主密钥，label是固定的字符串，seed是到目前为止，双方所有的发送以及接收到的消息按先后顺序累积计算的 hash 值。然后完成该消息并写入 c.sendBuf 中等待正式发送，最后将 verifyData 写入c.serverFinished。  
 　　　　5.2.4.3 正式推送 c.sendBuf 中累积的消息给客户端，依次包括 serverHelloMsg，newSessionTicketMsg（可选），切换信号，finishedMsg。  
 
     ```go
