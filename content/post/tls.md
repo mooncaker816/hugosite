@@ -786,10 +786,10 @@ preview = true
 　　　　5.1.1.4 将 serverHelloMsg 写入 c.sendBuf 中等待正式发送  
 　　　　5.1.1.5 构造服务端证书消息 certificateMsg，完成该消息并写入 c.sendBuf 中等待正式发送  
 　　　　5.1.1.6 按需构造服务端证书状态消息 certificateStatusMsg，完成该消息并写入 c.sendBuf 中等待正式发送  
-　　　　5.1.1.7 根据密码套件获取 keyAgreement，调用 generateServerKeyExchange 生成服务端秘钥交换消息                serverKeyExchangeMsg，完成该消息并写入 c.sendBuf 中等待正式发送  
+　　　　5.1.1.7 根据密码套件获取 keyAgreement，调用 generateServerKeyExchange 生成服务端秘钥交换消息 serverKeyExchangeMsg（非 RSA 秘钥交换），完成该消息并写入 c.sendBuf 中等待正式发送  
 　　　　5.1.1.8 根据自身需求，向客户端发送验证客户端证书的请求，构造请求消息 certificateRequestMsg，完成该消息并写入 c.sendBuf 中等待正式发送  
 　　　　5.1.1.9 至此，serverHello 完成，完成 serverHelloDoneMsg 消息，并写入 c.sendBuf 中等待正式发送  
-　　　　5.1.1.10 正式推送 c.sendBuf 中累积的消息给客户端，依次包括 serverHelloMsg，certificateMsg，certificateStatusMsg（可选），serverKeyExchangeMsg，certificateRequestMsg（可选），serverHelloDoneMsg  
+　　　　5.1.1.10 正式推送 c.sendBuf 中累积的消息给客户端，依次包括 serverHelloMsg，certificateMsg，certificateStatusMsg（可选），serverKeyExchangeMsg（非 RSA 秘钥交换），certificateRequestMsg（可选），serverHelloDoneMsg  
 
 	```go
 	// [Min] 完整的 handshake
@@ -849,7 +849,7 @@ preview = true
 			c.sendAlert(alertHandshakeFailure)
 			return err
 		}
-		// [Min] 如果 skx 不为 nil，说明不是 RSA，
+		// [Min] 如果 skx 不为 nil，说明不是 RSA，RSA 秘钥交换不会发送 serverKeyExchangeMsg
 		// [Min] 再把 serverKeyExchangeMsg 写入缓存 c.sendBuf 中，并完成该消息
 		if skx != nil {
 			hs.finishedHash.Write(skx.marshal())
@@ -898,7 +898,7 @@ preview = true
 
 		// [Min] 从缓存中将累积的消息推送到客户端，依次包括：
 		// [Min] serverHelloMsg，certificateMsg，certificateStatusMsg（可选），
-		// [Min] serverKeyExchangeMsg，certificateRequestMsg（可选），serverHelloDoneMsg
+		// [Min] serverKeyExchangeMsg（非 RSA 秘钥交换），certificateRequestMsg（可选），serverHelloDoneMsg
 		if _, err := c.flush(); err != nil {
 			return err
 		}
@@ -1096,7 +1096,7 @@ preview = true
 |1-1|clientHelloMsg|serverHelloMsg|
 |1-2||certificateMsg|
 |1-3||certificateStatusMsg（可选）|
-|1-4||serverKeyExchangeMsg|
+|1-4||serverKeyExchangeMsg（非 RSA 秘钥交换）|
 |1-5||certificateRequestMsg（可选）|
 |1-6||serverHelloDoneMsg|
 
